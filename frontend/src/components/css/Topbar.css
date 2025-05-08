@@ -1,0 +1,26 @@
+.top-bar {
+    background-color: #f8f9fa; /* Example background color */
+    padding: 8px 15px;
+    border-bottom: 1px solid #dee2e6; /* Example border */
+    font-size: 0.9rem;
+}
+
+#datetime {
+    color: #6c757d; /* Example text color */
+}
+
+.social-icons a {
+    color: #6c757d; /* Example icon color */
+    margin-left: 10px; /* Spacing between icons */
+    text-decoration: none;
+}
+
+.social-icons svg {
+    width: 18px; /* Example icon size */
+    height: 18px;
+    fill: currentColor; /* Use the anchor's color */
+}
+
+.social-icons a:hover {
+    color: #007bff; /* Example hover color */
+}
