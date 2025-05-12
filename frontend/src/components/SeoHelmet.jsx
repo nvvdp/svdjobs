@@ -8,6 +8,23 @@ export function SeoHelmet({ title, description }) {
     <Helmet>
       <title>{title}</title>
       {description && <meta name="description" content={description} />}
+      {/* Structured Data for Organization */}
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "SVD Jobs",
+          "url": "https://svdjobs.com/",
+          "logo": "https://svdjobs.com/vite.svg",
+          "sameAs": [
+            "https://www.facebook.com/",
+            "https://www.linkedin.com/",
+            "https://www.instagram.com/",
+            "https://github.com/",
+            "https://www.youtube.com/"
+          ]
+        })}
+      </script>
     </Helmet>
   );
 }
