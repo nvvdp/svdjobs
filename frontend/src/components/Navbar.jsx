@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Container, Flex, HStack, Text, useColorMode, Tooltip } from '@chakra-ui/react';
+import { Button, Container, Flex, HStack, Text, useColorMode, Tooltip, Box, Image } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import { IoMoon, IoHome, IoPerson, IoLogOut, IoLogIn } from 'react-icons/io5';
 import { LuSun } from 'react-icons/lu';
@@ -83,21 +83,25 @@ const Navbar = () => {
                     base: 'column',
                     sm: 'row'
                 }}>
-                <Text 
-                    fontSize={{
-                        base: "22",
-                        sm: "28"
-                    }} 
-                    fontWeight={"bold"}
-                    textTransform={"uppercase"}
-                    textAlign={"center"}
-                    bgGradient={
-                        "linear(to-l, cyan.400, blue.500)"
-                    }
-                    bgClip={"text"}
-                    >
-                    <Link to={"/"}>SVD Jobs</Link>               
-                </Text>
+                <Box display="flex" alignItems="center" justifyContent="center">
+                    <Image
+                        src="/home.svg" // Place your logo in public/ or update the path
+                        alt="SVD Jobs Logo"
+                        mr={2}
+                        fallback={
+                            <Text
+                                fontSize={{ base: '22', sm: '28' }}
+                                fontWeight="bold"
+                                textTransform="uppercase"
+                                textAlign="center"
+                                bgGradient="linear(to-l, cyan.400, blue.500)"
+                                bgClip="text"
+                            >
+                                <Link to={"/"}>SVD Jobs</Link>
+                            </Text>
+                        }
+                    />
+                </Box>
 
                 <HStack spacing={2} alignItems="center">
                     <Tooltip label="Home" hasArrow>

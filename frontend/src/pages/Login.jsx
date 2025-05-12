@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useUserStore } from '../store/user';
 import { useNavigate } from 'react-router-dom';
+import { SeoHelmet } from '../components/SeoHelmet';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -113,76 +114,79 @@ const Login = () => {
   };
 
   return (
-    <Container maxW="md" py={10} centerContent>
-      <Box
-        w="100%"
-        p={8}
-        borderWidth={1}
-        borderRadius="lg"
-        boxShadow="lg"
-        bg={bg}
-        color={color}
-      >
-        <Heading as="h2" size="lg" textAlign="center" mb={6}>
-          Login
-        </Heading>
-        {showForgot ? (
-          <VStack spacing={4} align="stretch">
-            <FormControl id="forgot-email" isRequired>
-              <FormLabel>Email address</FormLabel>
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={forgotEmail}
-                onChange={(e) => setForgotEmail(e.target.value)}
-              />
-            </FormControl>
-            <Button
-              colorScheme="blue"
-              size="lg"
-              isLoading={forgotLoading}
-              onClick={handleForgotPassword}
-            >
-              Send Reset Link
-            </Button>
-            <Button variant="link" onClick={() => setShowForgot(false)}>
-              Back to Login
-            </Button>
-          </VStack>
-        ) : (
-          <>
+    <>
+      <SeoHelmet title="Login - SVD Jobs" description="Login to your SVD Jobs account to manage your profile and apply for jobs." />
+      <Container maxW="md" py={10} centerContent>
+        <Box
+          w="100%"
+          p={8}
+          borderWidth={1}
+          borderRadius="lg"
+          boxShadow="lg"
+          bg={bg}
+          color={color}
+        >
+          <Heading as="h2" size="lg" textAlign="center" mb={6}>
+            Login
+          </Heading>
+          {showForgot ? (
             <VStack spacing={4} align="stretch">
-              <FormControl id="email" isRequired>
+              <FormControl id="forgot-email" isRequired>
                 <FormLabel>Email address</FormLabel>
                 <Input
                   type="email"
                   placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
                 />
               </FormControl>
-              <FormControl id="password" isRequired>
-                <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </FormControl>
-              <Button colorScheme="blue" size="lg" onClick={handleLogin}>
-                Login
+              <Button
+                colorScheme="blue"
+                size="lg"
+                isLoading={forgotLoading}
+                onClick={handleForgotPassword}
+              >
+                Send Reset Link
+              </Button>
+              <Button variant="link" onClick={() => setShowForgot(false)}>
+                Back to Login
               </Button>
             </VStack>
-            <Text mt={4} textAlign="center">
-              <Button variant="link" color="blue.500" onClick={() => setShowForgot(true)}>
-                Forgot Password?
-              </Button>
-            </Text>
-          </>
-        )}
-      </Box>
-    </Container>
+          ) : (
+            <>
+              <VStack spacing={4} align="stretch">
+                <FormControl id="email" isRequired>
+                  <FormLabel>Email address</FormLabel>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl id="password" isRequired>
+                  <FormLabel>Password</FormLabel>
+                  <Input
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </FormControl>
+                <Button colorScheme="blue" size="lg" onClick={handleLogin}>
+                  Login
+                </Button>
+              </VStack>
+              <Text mt={4} textAlign="center">
+                <Button variant="link" color="blue.500" onClick={() => setShowForgot(true)}>
+                  Forgot Password?
+                </Button>
+              </Text>
+            </>
+          )}
+        </Box>
+      </Container>
+    </>
   );
 };
 

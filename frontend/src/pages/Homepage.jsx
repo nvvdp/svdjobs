@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'; // Import useMemo and useS
 import { Container, VStack, Text, SimpleGrid, Select, Input, HStack, Spinner, Center } from '@chakra-ui/react'; // Import additional components
 import { useJobStore } from '../store/job';
 import JobCard from '../components/JobCard';
+import { SeoHelmet } from '../components/SeoHelmet';
 
 const Homepage = () => {
   const { fetchJobs, jobs } = useJobStore();
@@ -46,65 +47,68 @@ const Homepage = () => {
   }
 
   return (
-    <Container maxW="container.xl" py={12}>
-      <VStack spacing={8}>
-        {/* Filter Options */}
-        <HStack w="full" spacing={4} justifyContent="center">
-          <Select
-            placeholder="Filter by Job Type"
-            value={filter.jobType}
-            onChange={e => setFilter(f => ({ ...f, jobType: e.target.value }))}
-            maxW="200px"
-          >
-            <option value="full-time">Full-Time</option>
-            <option value="part-time">Part-Time</option>
-            <option value="contract">Contract</option>
-            <option value="internship">Internship</option>
-          </Select>
-          <Select
-            placeholder="Filter by Location"
-            value={filter.location}
-            onChange={e => setFilter(f => ({ ...f, location: e.target.value }))}
-            maxW="200px"
-          >
-            <option value="Remote">Remote</option>
-            <option value="On-site">On-site</option>
-            <option value="Hybrid">Hybrid</option>
-          </Select>
-          <Input
-            placeholder="Search by title or company"
-            value={filter.search}
-            onChange={e => setFilter(f => ({ ...f, search: e.target.value }))}
-            maxW="250px"
-          />
-        </HStack>
+    <>
+      <SeoHelmet title="SVD Jobs - Find Your Next Opportunity" description="Browse and apply for the latest jobs on SVD Jobs." />
+      <Container maxW="container.xl" py={12}>
+        <VStack spacing={8}>
+          {/* Filter Options */}
+          <HStack w="full" spacing={4} justifyContent="center">
+            <Select
+              placeholder="Filter by Job Type"
+              value={filter.jobType}
+              onChange={e => setFilter(f => ({ ...f, jobType: e.target.value }))}
+              maxW="200px"
+            >
+              <option value="full-time">Full-Time</option>
+              <option value="part-time">Part-Time</option>
+              <option value="contract">Contract</option>
+              <option value="internship">Internship</option>
+            </Select>
+            <Select
+              placeholder="Filter by Location"
+              value={filter.location}
+              onChange={e => setFilter(f => ({ ...f, location: e.target.value }))}
+              maxW="200px"
+            >
+              <option value="Remote">Remote</option>
+              <option value="On-site">On-site</option>
+              <option value="Hybrid">Hybrid</option>
+            </Select>
+            <Input
+              placeholder="Search by title or company"
+              value={filter.search}
+              onChange={e => setFilter(f => ({ ...f, search: e.target.value }))}
+              maxW="250px"
+            />
+          </HStack>
 
-        <Text
-          fontSize={"30"}
-          fontWeight={"bold"}
-          bgGradient={"linear(to-r, cyan.400, blue.500)"}
-          bgClip={"text"}
-          textAlign={"center"}>
-            Current Jobs
-        </Text>
+          <Text
+            fontSize={"30"}
+            fontWeight={"bold"}
+            bgGradient={"linear(to-r, cyan.400, blue.500)"}
+            bgClip={"text"}
+            textAlign={"center"}>
+              Current Jobs
+          </Text>
 
-        <SimpleGrid
-          columns={{ base: 1, md: 2, lg: 3 }}
-          spacing={10}
-          w={"full"}>
-            {filteredJobs.map((job, index) => (
-              <JobCard key={job._id} job={job} index={index + 1} />
-            ))}
-        </SimpleGrid>
+          <SimpleGrid
+            columns={{ base: 1, md: 2, lg: 3 }}
+            spacing={10}
+            w={"full"}>
+              {filteredJobs.map((job, index) => (
+                <JobCard key={job._id} job={job} index={index + 1} />
+              ))}
+          </SimpleGrid>
 
-        {filteredJobs.length === 0 && (
-          <Text fontSize={"xl"} textAlign={"center"} fontWeight={"bold"} color={"gray.500"}>
-          No jobs available at the moment 😥 {""}
-          
-        </Text>
-        )}
-      </VStack>
-    </Container>
+          {filteredJobs.length === 0 && (
+            <Text fontSize={"xl"} textAlign={"center"} fontWeight={"bold"} color={"gray.500"}>
+            No jobs available at the moment 😥 {""}
+            
+          </Text>
+          )}
+        </VStack>
+      </Container>
+    </>
   );
 };
 
