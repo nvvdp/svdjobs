@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Flex, Text, Icon, Container, HStack, useColorModeValue } from '@chakra-ui/react';
+import { Button, Flex, Text, Icon, Container, HStack, useColorModeValue, Tooltip } from '@chakra-ui/react';
 import { FaFacebook, FaLinkedin, FaInstagram, FaGithub, FaYoutube } from 'react-icons/fa';
 
 const Topbar = () => {
@@ -52,31 +52,41 @@ const Topbar = () => {
                     {currentDateTime}
                 </Text>
                 <HStack spacing={2} alignItems="center">
-                    <Link to={"https://www.facebook.com"} target='_blank'>
-                        <Button target='_blank' aria-label="Facebook">
+                    <Tooltip label="Facebook" hasArrow>
+                    <Link to={"https://www.facebook.com/"} target='_blank' lable="Facebook">
+                        <Button target='_blank' aria-label="Facebook" lable="Facebook">
                             <Icon as={FaFacebook} boxSize={5} color={iconColor} _hover={{ color: 'blue.400' }} />
                         </Button>
                     </Link>
-                    <Link to={"https://www.linkedin.com"} target='_blank'>
-                        <Button target='_blank' aria-label="LinkedIn">
+                    </Tooltip>
+                    <Tooltip label="LinkedIn" hasArrow>
+                    <Link to={"https://www.linkedin.com/"} target='_blank' lable="LinkedIn">
+                        <Button target='_blank' aria-label="LinkedIn" lable="LinkedIn">
                             <Icon as={FaLinkedin} boxSize={5} color={iconColor} _hover={{ color: 'blue.400' }} />
                         </Button>
                     </Link>
-                    <Link to={"https://www.instagram.com"} target='_blank'>
-                        <Button target='_blank' aria-label="Instagram">
+                    </Tooltip>
+                    <Tooltip label="Instagram" hasArrow>
+                    <Link to={"https://www.instagram.com/"} target='_blank' lable="Instagram">
+                        <Button target='_blank' aria-label="Instagram" lable="Instagram">
                             <Icon as={FaInstagram} boxSize={5} color={iconColor} _hover={{ color: 'pink.400' }} />
                         </Button>
                     </Link>
-                    <Link to={"https://github.com/nvvdp"} target='_blank'>
-                        <Button target='_blank' aria-label="GitHub">
+                    </Tooltip>
+                    <Tooltip label="GitHub" hasArrow>
+                    <Link to={"https://github.com/"} target='_blank' lable="GitHub">
+                        <Button target='_blank' aria-label="GitHub" lable="GitHub">
                             <Icon as={FaGithub} boxSize={5} color={iconColor} _hover={{ color: 'gray.400' }} />
                         </Button>
                     </Link>
-                    <Link to={"https://www.youtube.com/your_channel"} target='_blank'>
-                        <Button target='_blank' aria-label="YouTube">
+                    </Tooltip>
+                    <Tooltip label="YouTube" hasArrow>
+                    <Link to={"https://www.youtube.com/"} target='_blank' lable="YouTube">
+                        <Button target='_blank' aria-label="YouTube"  lable="YouTube">
                             <Icon as={FaYoutube} boxSize={5} color={iconColor} _hover={{ color: 'red.400' }} />
                         </Button>
                     </Link>
+                    </Tooltip>
                 </HStack>
             </Flex>
         </Container>

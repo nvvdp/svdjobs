@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Container, Flex, HStack, Text, useColorMode } from '@chakra-ui/react';
+import { Button, Container, Flex, HStack, Text, useColorMode, Tooltip } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import { IoMoon, IoHome, IoPerson, IoLogOut, IoLogIn } from 'react-icons/io5';
 import { LuSun } from 'react-icons/lu';
@@ -61,9 +61,10 @@ const Navbar = () => {
             }
         }
 
-        if (token) {
-            navigate('/'); // Redirect to home after login
-        }
+        // FIX: Remove unconditional redirect to home
+        // if (token) {
+        //     navigate('/'); // Redirect to home after login
+        // }
     }, [isLoggedIn, setIsLoggedIn, navigate]);
 
     const handleLogout = () => {
@@ -99,40 +100,52 @@ const Navbar = () => {
                 </Text>
 
                 <HStack spacing={2} alignItems="center">
-                    <Link to={"/"}>
-                        <Button>
-                            <IoHome fontSize={20} />
-                        </Button>
-                    </Link>
-                    {isAdmin && (
-                        <Link to={"/create"}>
+                    <Tooltip label="Home" hasArrow>
+                        <Link to={"/"}>
                             <Button>
-                                <PlusSquareIcon fontSize={20} />
+                                <IoHome fontSize={20} />
                             </Button>
                         </Link>
+                    </Tooltip>
+                    {isAdmin && (
+                        <Tooltip label="Create Job" hasArrow>
+                            <Link to={"/create"}>
+                                <Button>
+                                    <PlusSquareIcon fontSize={20} />
+                                </Button>
+                            </Link>
+                        </Tooltip>
                     )}
                     {isLoggedIn ? (
                         <>
-                            <Link to={"/profile"}>
-                                <Button>
-                                    <IoPerson fontSize={20} />
+                            <Tooltip label="Profile" hasArrow>
+                                <Link to={"/profile"} label="Profile">
+                                    <Button>
+                                        <IoPerson fontSize={20} />
+                                    </Button>
+                                </Link>
+                            </Tooltip>
+                            <Tooltip label="Logout" hasArrow>
+                                <Button onClick={handleLogout}>
+                                    <IoLogOut fontSize={20} />
                                 </Button>
-                            </Link>
-                            <Button onClick={handleLogout}>
-                                <IoLogOut fontSize={20} />
-                            </Button>
+                            </Tooltip>
                         </>
                     ) : (
-                        <Link to={"/login"}>
-                            <Button>
-                                <IoLogIn fontSize={20} />
-                            </Button>
-                        </Link>
+                        <Tooltip label="Login" hasArrow>
+                            <Link to={"/login"} label="Login">
+                                <Button>
+                                    <IoLogIn fontSize={20} />
+                                </Button>
+                            </Link>
+                        </Tooltip>
                     )}
-                    <Button onClick={toggleColorMode}>
-                        {colorMode === "light" ? <IoMoon /> : 
-                        < LuSun size="20" /> }
-                    </Button>
+                    <Tooltip label={colorMode === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"} hasArrow>
+                        <Button onClick={toggleColorMode} >
+                            {colorMode === "light" ? <IoMoon /> : 
+                            < LuSun size="20" /> }
+                        </Button>
+                    </Tooltip>
                 </HStack>
             </Flex>
         </Container>

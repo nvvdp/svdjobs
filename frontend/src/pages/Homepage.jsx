@@ -1,15 +1,15 @@
-import { useEffect, useMemo } from 'react'; // Import useMemo
-import { Container, VStack, Text, SimpleGrid } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
-import { useJobStore } from '../store/job'
+import { useEffect, useMemo, useState } from 'react'; // Import useMemo and useState
+import { Container, VStack, Text, SimpleGrid, Select, Input, HStack, Spinner, Center } from '@chakra-ui/react'; // Import additional components
+import { useJobStore } from '../store/job';
 import JobCard from '../components/JobCard';
 
 const Homepage = () => {
-  const {fetchJobs, jobs} = useJobStore();
+  const { fetchJobs, jobs } = useJobStore();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch jobs when the component mounts or fetchJobs changes
-    fetchJobs();
+    setLoading(true);
+    fetchJobs().finally(() => setLoading(false));
   }, [fetchJobs]); // Added fetchJobs to dependency array (Zustand actions are typically stable)
 
   // Sort jobs by createdAt in descending order (newest first)
@@ -19,10 +19,66 @@ const Homepage = () => {
     return [...jobs].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }, [jobs]);
 
-  
+  const [filter, setFilter] = useState({
+    jobType: '',
+    location: '',
+    search: ''
+  });
+
+  const filteredJobs = useMemo(() => {
+    return sortedJobs.filter(job => {
+      const matchesType = filter.jobType ? job.jobType.toLowerCase() === filter.jobType : true;
+      const matchesLocation = filter.location ? job.location === filter.location : true;
+      const matchesSearch = filter.search
+        ? job.title.toLowerCase().includes(filter.search.toLowerCase()) ||
+          job.company.toLowerCase().includes(filter.search.toLowerCase())
+        : true;
+      return matchesType && matchesLocation && matchesSearch;
+    });
+  }, [sortedJobs, filter]);
+
+  if (loading) {
+    return (
+      <Center minH="60vh">
+        <Spinner size="xl" thickness="4px" color="blue.500" speed="0.65s" />
+      </Center>
+    );
+  }
+
   return (
     <Container maxW="container.xl" py={12}>
       <VStack spacing={8}>
+        {/* Filter Options */}
+        <HStack w="full" spacing={4} justifyContent="center">
+          <Select
+            placeholder="Filter by Job Type"
+            value={filter.jobType}
+            onChange={e => setFilter(f => ({ ...f, jobType: e.target.value }))}
+            maxW="200px"
+          >
+            <option value="full-time">Full-Time</option>
+            <option value="part-time">Part-Time</option>
+            <option value="contract">Contract</option>
+            <option value="internship">Internship</option>
+          </Select>
+          <Select
+            placeholder="Filter by Location"
+            value={filter.location}
+            onChange={e => setFilter(f => ({ ...f, location: e.target.value }))}
+            maxW="200px"
+          >
+            <option value="Remote">Remote</option>
+            <option value="On-site">On-site</option>
+            <option value="Hybrid">Hybrid</option>
+          </Select>
+          <Input
+            placeholder="Search by title or company"
+            value={filter.search}
+            onChange={e => setFilter(f => ({ ...f, search: e.target.value }))}
+            maxW="250px"
+          />
+        </HStack>
+
         <Text
           fontSize={"30"}
           fontWeight={"bold"}
@@ -36,24 +92,20 @@ const Homepage = () => {
           columns={{ base: 1, md: 2, lg: 3 }}
           spacing={10}
           w={"full"}>
-            {sortedJobs.map((job, index) => ( // Use sortedJobs for mapping
-              <JobCard key={job._id} job={job} index={index + 1} /> // Pass index as a prop, starting from 1
+            {filteredJobs.map((job, index) => (
+              <JobCard key={job._id} job={job} index={index + 1} />
             ))}
         </SimpleGrid>
 
-        {sortedJobs.length === 0 && ( // Check sortedJobs length
+        {filteredJobs.length === 0 && (
           <Text fontSize={"xl"} textAlign={"center"} fontWeight={"bold"} color={"gray.500"}>
           No jobs available at the moment 😥 {""}
-          <Link to={"/create"}>
-            <Text as={"span"}  color={"blue.500"} _hover={{ textDecoration: "underline" }}>
-              Create a job
-            </Text>
-          </Link>
+          
         </Text>
         )}
       </VStack>
     </Container>
-  )
-}
+  );
+};
 
-export default Homepage
+export default Homepage;

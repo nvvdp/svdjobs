@@ -23,12 +23,14 @@ import {
     Badge,
     Tooltip,
     Stack,
-    Divider
+    Divider,
+    Link as ChakraLink
 } from '@chakra-ui/react';
 import { useJobStore } from '../store/job';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/user';
+
 
 const JobCard = ({ job, index }) => {
     // Initialize updateJob state with job data, ensuring jobType is lowercase
@@ -41,11 +43,15 @@ const JobCard = ({ job, index }) => {
     const textColor = useColorModeValue("gray.600", "gray.200");
     const bg = useColorModeValue("white", "gray.800");
     const { deleteJob, updateJob: updateJobFromStore, getJobByUniqueId } = useJobStore();
-    const { isLoggedIn } = useUserStore();
+    const { isLoggedIn, getProfile } = useUserStore();
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const navigate = useNavigate();
+
+    // Calculate if the job deadline has passed
+    const isPastDeadline = job.lastDate && new Date(job.lastDate) < new Date();
 
     // Effect to reset form state with current job data when modal opens
     // or if the job prop changes while the modal might be open.
@@ -57,6 +63,18 @@ const JobCard = ({ job, index }) => {
             });
         }
     }, [job, isOpen]); // Dependencies: re-run if job or isOpen changes.
+
+    useEffect(() => {
+        const checkAdmin = async () => {
+            if (isLoggedIn) {
+                const response = await getProfile();
+                setIsAdmin(response.success && response.user.role === 'admin');
+            } else {
+                setIsAdmin(false);
+            }
+        };
+        checkAdmin();
+    }, [isLoggedIn, getProfile]);
 
     const handleDeleteJob = async (jid) => {
         const { success, message } = await deleteJob(jid);
@@ -137,7 +155,19 @@ const JobCard = ({ job, index }) => {
                     <Tooltip label="View Job Details" aria-label="View Job Tooltip">
                         <IconButton icon={<ViewIcon />} onClick={handleViewJob} colorScheme='blue' aria-label='View Job details' />
                     </Tooltip>
-                    {isLoggedIn && (
+                    <Tooltip label="Apply Job" aria-label="Apply Job Tooltip">
+                        <Button
+                            colorScheme="blue"
+                            as={ChakraLink}
+                            href={job.applyLink}
+                            isExternal
+                            isDisabled={isPastDeadline}
+                            _hover={isPastDeadline ? {} : { textDecoration: "underline" }}
+                        >
+                            {isPastDeadline ? "Application Closed" : "Apply Now"}
+                        </Button>
+                    </Tooltip>
+                    {isLoggedIn && isAdmin && (
                         <>
                             <Tooltip label="Edit Job" aria-label="Edit Job Tooltip">
                                 <IconButton icon={<EditIcon />} onClick={onOpen} colorScheme='yellow' aria-label='Edit Job' />
@@ -229,7 +259,7 @@ const JobCard = ({ job, index }) => {
                                 placeholder="Last Date to Apply"
                                 name="lastDate"
                                 type="date"
-                                value={updateJob.lastDate}
+                                value={updateJob.lastDate ? updateJob.lastDate.slice(0, 10) : ''}
                                 onChange={(e) => setUpdateJob({ ...updateJob, lastDate: e.target.value })}
                             />
                             <HStack spacing={2}>
