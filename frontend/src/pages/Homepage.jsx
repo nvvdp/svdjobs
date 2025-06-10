@@ -29,12 +29,13 @@ const Homepage = () => {
   const filteredJobs = useMemo(() => {
     return sortedJobs.filter(job => {
       const matchesType = filter.jobType ? job.jobType.toLowerCase() === filter.jobType : true;
+      const matchesSector =filter.sector ? job.sector === filter.sector : true;
       const matchesLocation = filter.location ? job.location === filter.location : true;
       const matchesSearch = filter.search
         ? job.title.toLowerCase().includes(filter.search.toLowerCase()) ||
           job.company.toLowerCase().includes(filter.search.toLowerCase())
         : true;
-      return matchesType && matchesLocation && matchesSearch;
+      return matchesType && matchesSector && matchesLocation && matchesSearch;
     });
   }, [sortedJobs, filter]);
 
@@ -63,6 +64,15 @@ const Homepage = () => {
               <option value="part-time">Part-Time</option>
               <option value="contract">Contract</option>
               <option value="internship">Internship</option>
+            </Select>
+            <Select
+              placeholder="Filter by Sector"
+              value={filter.sector}
+              onChange={e => setFilter(f => ({ ...f, sector: e.target.value }))}
+              maxW="200px"
+            >
+              <option value="Government">Government</option>
+              <option value="Private">Private</option>
             </Select>
             <Select
               placeholder="Filter by Location"

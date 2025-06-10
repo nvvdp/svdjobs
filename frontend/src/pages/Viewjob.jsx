@@ -97,6 +97,9 @@ const Viewjob = () => {
                         </Heading>
                         <HStack spacing={4} mb={4}>
                             <Badge colorScheme="green">{job.jobType}</Badge>
+                            <Badge colorScheme="red">{job.sector}</Badge>
+                        </HStack>
+                        <HStack spacing={4} mb={4}>
                             <Badge colorScheme="purple">{job.experience} Experience</Badge>
                             <Badge colorScheme="blue">₹{job.salary} LPA</Badge>
                         </HStack>

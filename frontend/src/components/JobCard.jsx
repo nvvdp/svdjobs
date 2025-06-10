@@ -144,6 +144,7 @@ const JobCard = ({ job, index }) => {
                     <HStack spacing={2}>
                         <Badge colorScheme="green">{job.jobType}</Badge>
                         <Badge colorScheme="blue">{job.experience}</Badge>
+                        <Badge colorScheme="red">{job.sector}</Badge>
                         <Badge colorScheme="purple">{job.location}</Badge>
                     </HStack>
                     <Text fontSize={"lg"} color={textColor} fontWeight="bold">Company: {job.company}</Text>
@@ -198,6 +199,15 @@ const JobCard = ({ job, index }) => {
                                 value={updateJob.company}
                                 onChange={(e) => setUpdateJob({ ...updateJob, company: e.target.value })}
                             />
+                            <Select
+                                placeholder="Sector"
+                                name="sector"
+                                value={updateJob.sector}
+                                onChange={(e) => setUpdateJob({ ...updateJob, sector: e.target.value })}
+                            >
+                                <option value="Government">Government</option>
+                                <option value="Private">Private</option>
+                            </Select>
                             <Select
                                 placeholder="Location"
                                 name="location"

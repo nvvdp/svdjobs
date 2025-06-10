@@ -7,6 +7,7 @@ const Createpage = () => {
     const [newJob, setNewJob] = useState({
         title: '',
         company: '',
+        sector: '',
         location: '',
         image: '',
         description: '',
@@ -51,6 +52,7 @@ const Createpage = () => {
         setNewJob({
             title: '',
             company: '',
+            sector: '',
             location: '',
             image: '',
             description: '',
@@ -87,6 +89,15 @@ const Createpage = () => {
                                 value={newJob.company}
                                 onChange={(e) => setNewJob({ ...newJob, company: e.target.value })}
                             />
+                            <Select
+                                placeholder="Sector"
+                                name="sector"
+                                value={newJob.sector}
+                                onChange={(e) => setNewJob({ ...newJob, sector: e.target.value })}
+                            >
+                                <option value="Government">Government</option>
+                                <option value="Private">Private</option>
+                            </Select>
                             <Select
                                 placeholder="Location"
                                 name="location"

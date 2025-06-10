@@ -9,6 +9,14 @@ const jobSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please add a company name"],
   },
+  sector: {
+    type: String,
+    required: [true, "Please add a Sector"],
+    enum: {
+      values: ["Government", "Private"],
+      message: "Sector must be either 'Government', or 'Private'",
+    },
+  },
   location: {
     type: String,
     required: [true, "Please add a location"],
